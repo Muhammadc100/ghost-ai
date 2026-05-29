@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Design System & UI Primitives
+- Editor Chrome Components
 
 ## Current Goal
 
-- Define the immediate implementation goal here.
+- Implement editor navbar and project sidebar shell
 
 ## Completed
 
@@ -17,6 +17,9 @@ Update this file whenever the current phase, active feature, or implementation s
 - Installed lucide-react
 - Created lib/utils.ts with cn() helper
 - Configured dark-only theme in globals.css
+- Created EditorNavbar component (components/editor/editor-navbar.tsx)
+- Created ProjectSidebar component (components/editor/project-sidebar.tsx)
+- Dialog pattern ready (uses existing shadcn Dialog with custom color tokens)
 
 ## In Progress
 
@@ -24,7 +27,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Next Up
 
-- Add the next planned feature unit here.
+- Add canvas and node rendering components
 
 ## Open Questions
 
