@@ -1,53 +1,32 @@
-"use client";
+"use client"
 
-import { X, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+import { X, Plus } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 interface ProjectSidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
 export function ProjectSidebar({ isOpen, onClose }: ProjectSidebarProps) {
   return (
-    <>
-      {/* Backdrop */}
-      <div
-        className={cn(
-          "fixed inset-0 z-40 bg-black/50 transition-opacity duration-300",
-          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        )}
-        onClick={onClose}
-      />
+    <aside
+      className={`fixed top-0 left-0 h-full w-72 z-50 flex flex-col bg-bg-surface border-r border-border-default transition-transform duration-200 ${
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      }`}
+    >
+      <div className="h-12 shrink-0 flex items-center justify-between px-4 border-b border-border-default">
+        <span className="text-sm font-medium text-text-primary">Projects</span>
+        <Button variant="ghost" size="icon-sm" onClick={onClose}>
+          <X className="h-4 w-4" />
+          <span className="sr-only">Close sidebar</span>
+        </Button>
+      </div>
 
-      {/* Sidebar panel */}
-      <aside
-        className={cn(
-          "fixed top-0 left-0 bottom-0 z-50 w-72 flex flex-col border-r border-border-default bg-[var(--bg-surface)] transition-transform duration-300 ease-out",
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        )}
-      >
-        {/* Header */}
-        <div className="flex h-14 items-center justify-between px-4 border-b border-border-default">
-          <h2 className="text-base font-semibold text-[var(--text-primary)]">
-            Projects
-          </h2>
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            onClick={onClose}
-            className="h-7 w-7"
-            aria-label="Close projects"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-
-        {/* Tabs */}
-        <Tabs defaultValue="my-projects" className="flex-1 flex flex-col min-h-0">
-          <TabsList className="mx-4 mt-3">
+      <div className="flex-1 flex flex-col overflow-hidden p-3">
+        <Tabs defaultValue="my-projects" className="flex-1 flex flex-col">
+          <TabsList className="w-full">
             <TabsTrigger value="my-projects" className="flex-1">
               My Projects
             </TabsTrigger>
@@ -56,37 +35,28 @@ export function ProjectSidebar({ isOpen, onClose }: ProjectSidebarProps) {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="my-projects" className="flex-1 m-0 p-4">
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <p className="text-sm text-[var(--text-muted)]">
-                No projects yet
-              </p>
-              <p className="text-xs text-[var(--text-faint)] mt-1">
-                Create your first project to get started
-              </p>
-            </div>
+          <TabsContent
+            value="my-projects"
+            className="flex-1 flex items-center justify-center"
+          >
+            <p className="text-sm text-text-muted">No projects yet.</p>
           </TabsContent>
 
-          <TabsContent value="shared" className="flex-1 m-0 p-4">
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <p className="text-sm text-[var(--text-muted)]">
-                No shared projects
-              </p>
-              <p className="text-xs text-[var(--text-faint)] mt-1">
-                Projects shared with you will appear here
-              </p>
-            </div>
+          <TabsContent
+            value="shared"
+            className="flex-1 flex items-center justify-center"
+          >
+            <p className="text-sm text-text-muted">No shared projects.</p>
           </TabsContent>
         </Tabs>
+      </div>
 
-        {/* New Project Button */}
-        <div className="p-4 border-t border-border-default">
-          <Button className="w-full" size="sm">
-            <Plus className="h-4 w-4 mr-1.5" />
-            New Project
-          </Button>
-        </div>
-      </aside>
-    </>
-  );
+      <div className="shrink-0 p-3 border-t border-border-default">
+        <Button variant="default" size="default" className="w-full gap-2">
+          <Plus className="h-4 w-4" />
+          New Project
+        </Button>
+      </div>
+    </aside>
+  )
 }

@@ -2,6 +2,7 @@
 
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { UserButton } from "@clerk/nextjs";
 
 interface EditorNavbarProps {
   isSidebarOpen: boolean;
@@ -10,7 +11,7 @@ interface EditorNavbarProps {
 
 export function EditorNavbar({ isSidebarOpen, onToggleSidebar }: EditorNavbarProps) {
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 h-14 flex items-center justify-between border-b border-border-default bg-[var(--bg-surface)] px-4">
+    <header className="fixed top-0 left-0 right-0 z-30 h-14 flex items-center justify-between border-b border-border-default bg-[var(--bg-surface)] px-4">
       {/* Left section */}
       <div className="flex items-center gap-2">
         <Button
@@ -37,7 +38,13 @@ export function EditorNavbar({ isSidebarOpen, onToggleSidebar }: EditorNavbarPro
 
       {/* Right section */}
       <div className="flex items-center gap-2 min-w-[100px] justify-end">
-        {/* Reserved for future elements like user menu, share button, etc. */}
+        <UserButton
+          appearance={{
+            elements: {
+              avatarBox: "h-9 w-9",
+            },
+          }}
+        />
       </div>
     </header>
   );

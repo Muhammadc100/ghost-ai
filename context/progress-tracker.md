@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Editor Chrome Components
+- Authentication (Clerk)
 
 ## Current Goal
 
-- Implement editor navbar and project sidebar shell
+- Implement auth with Clerk: provider, auth pages, redirects, route protection, and user menu
 
 ## Completed
 
@@ -20,10 +20,19 @@ Update this file whenever the current phase, active feature, or implementation s
 - Created EditorNavbar component (components/editor/editor-navbar.tsx)
 - Created ProjectSidebar component (components/editor/project-sidebar.tsx)
 - Dialog pattern ready (uses existing shadcn Dialog with custom color tokens)
+- Installed @clerk/ui
+- Created proxy.ts for route protection
+- Wrapped root layout with ClerkProvider using dark theme
+- Created sign-in page (app/sign-in/page.tsx) with two-panel layout
+- Created sign-up page (app/sign-up/page.tsx) with two-panel layout
+- Added auth redirect in root page (/ → /editor if authenticated, /sign-in if not)
+- Added UserButton to EditorNavbar
+- Created editor page (app/editor/page.tsx) with navbar and sidebar
+- Build passes
 
 ## In Progress
 
-- None yet.
+- None.
 
 ## Next Up
 
