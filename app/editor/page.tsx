@@ -1,11 +1,48 @@
 "use client";
 
 import { useState } from "react";
+import { Plus } from "lucide-react";
 import { EditorNavbar } from "@/components/editor/editor-navbar";
 import { ProjectSidebar } from "@/components/editor/project-sidebar";
+import { ProjectDialogs } from "@/components/editor/project-dialogs";
+import { Button } from "@/components/ui/button";
+import { useProjectDialogs } from "@/hooks/use-project-dialogs";
+
+function EditorHome({ onNewProject }: { onNewProject: () => void }) {
+  return (
+    <main className="pt-14 min-h-screen flex flex-col items-center justify-center p-8">
+      <div className="text-center space-y-4 max-w-full">
+        <h1 className="text-2xl font-heading font-semibold text-text-primary">
+          Create a project or open an existing one
+        </h1>
+        <p className="text-text-secondary">
+          Start a new architecture workspace, or choose a project from the sidebar.
+        </p>
+        <Button variant="default" size="default" onClick={onNewProject} className="gap-2">
+          <Plus className="h-4 w-4" />
+          New Project
+        </Button>
+      </div>
+    </main>
+  );
+}
 
 export default function EditorPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const {
+    projects,
+    openCreateDialog,
+    openRenameDialog,
+    openDeleteDialog,
+    dialogState,
+    formState,
+    isLoading,
+    closeDialog,
+    handleNameChange,
+    handleCreateProject,
+    handleRenameProject,
+    handleDeleteProject,
+  } = useProjectDialogs();
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -21,12 +58,28 @@ export default function EditorPage() {
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={handleToggleSidebar}
       />
-      <ProjectSidebar isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
 
-      {/* Canvas area - placeholder for future node editor */}
-      <main className="pt-14 min-h-screen flex items-center justify-center">
-        <p className="text-[var(--text-muted)]">Canvas area</p>
-      </main>
+      <ProjectDialogs
+        dialogState={dialogState}
+        formState={formState}
+        isLoading={isLoading}
+        onCloseDialog={closeDialog}
+        onNameChange={handleNameChange}
+        onCreateProject={handleCreateProject}
+        onRenameProject={handleRenameProject}
+        onDeleteProject={handleDeleteProject}
+      >
+        <ProjectSidebar
+          isOpen={isSidebarOpen}
+          onClose={handleCloseSidebar}
+          projects={projects}
+          onNewProject={openCreateDialog}
+          onRenameProject={openRenameDialog}
+          onDeleteProject={openDeleteDialog}
+        />
+
+        <EditorHome onNewProject={openCreateDialog} />
+      </ProjectDialogs>
     </div>
   );
 }

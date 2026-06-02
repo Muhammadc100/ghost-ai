@@ -29,6 +29,14 @@ Update this file whenever the current phase, active feature, or implementation s
 - Added UserButton to EditorNavbar
 - Created editor page (app/editor/page.tsx) with navbar and sidebar
 - Build passes
+- Editor home screen with heading, description, and New Project button
+- Created useProjectDialogs hook for managing dialog/form/loading state
+- Create Project dialog with name input and live slug preview
+- Rename Project dialog with auto-focus and Enter submission
+- Delete Project dialog with destructive confirmation
+- Sidebar project items with rename/delete actions (owned projects only)
+- Sidebar hides actions for shared projects
+- Mobile backdrop closes sidebar on tap
 
 ## In Progress
 
