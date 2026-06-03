@@ -4,14 +4,22 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Authentication (Clerk)
+- Database (Prisma)
 
 ## Current Goal
 
-- Implement auth with Clerk: provider, auth pages, redirects, route protection, and user menu
+- Set up Prisma with Project models, Prisma client singleton, and first migration
 
 ## Completed
 
+- (Previous: Authentication with Clerk)
+- Created prisma/schema.prisma with Project and ProjectCollaborator models
+- Added ProjectStatus enum (DRAFT, ARCHIVED)
+- Created lib/prisma.ts with cached singleton (uses PostgreSQL driver adapter)
+- Created Prisma Postgres database via create-db CLI
+- Ran initial migration (prisma/migrations/20260603150550_init)
+- Generated Prisma client to app/generated/prisma
+- Build passes with Prisma integration
 - Installed and configured shadcn/ui
 - Added UI components: Button, Card, Dialog, Input, Tabs, Textarea, ScrollArea
 - Installed lucide-react
@@ -48,7 +56,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Open Questions
 
-- Add unresolved product or implementation questions here.
+- None.
 
 ## Architecture Decisions
 
