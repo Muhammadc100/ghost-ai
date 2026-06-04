@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Project, DialogState, FormState } from "@/hooks/use-project-dialogs";
+import { Project, DialogState, FormState } from "@/hooks/use-project-actions";
 
 interface ProjectDialogsProps {
   children: React.ReactNode;

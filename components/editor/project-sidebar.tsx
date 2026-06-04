@@ -4,7 +4,7 @@ import { useState } from "react";
 import { X, Plus, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Project } from "@/hooks/use-project-dialogs";
+import { Project } from "@/hooks/use-project-actions";
 
 interface ProjectSidebarProps {
   isOpen: boolean;

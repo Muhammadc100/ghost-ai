@@ -4,15 +4,28 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Database (Prisma)
+- None (complete)
 
 ## Current Goal
 
-- Set up Prisma with Project models, Prisma client singleton, and first migration
+- None
 
 ## Completed
 
+- (Previous: Project APIs)
+- Wired editor home sidebar and dialogs to real project API
+- Created lib/data.ts with getProjects() for server-side data fetching
+- Created useProjectActions hook with API integration (POST/PATCH/DELETE)
+- Create dialog generates unique slug suffix, calls POST /api/projects, navigates to workspace
+- Rename dialog pre-fills current name, calls PATCH /api/projects/[id], updates state on success
+- Delete dialog calls DELETE /api/projects/[id], redirects to /editor if deleting active workspace
+- Editor page is now server component that fetches data and passes to client component
+- Build passes
 - (Previous: Authentication with Clerk)
+- Created Project API routes: GET/POST /api/projects, PATCH/DELETE /api/projects/[projectId]
+- Owner checks enforced for rename/delete (403 for non-owners)
+- Unauthenticated requests return 401
+- Build passes with API routes
 - Created prisma/schema.prisma with Project and ProjectCollaborator models
 - Added ProjectStatus enum (DRAFT, ARCHIVED)
 - Created lib/prisma.ts with cached singleton (uses PostgreSQL driver adapter)
@@ -52,7 +65,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Next Up
 
-- Add canvas and node rendering components
+- Wire the workspace editor to the project (load project data in /editor/[projectId])
 
 ## Open Questions
 
