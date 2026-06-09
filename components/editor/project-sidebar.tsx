@@ -1,54 +1,54 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { X, Plus, Pencil, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Project } from "@/hooks/use-project-actions";
+import Link from "next/link"
+import { X, Plus, Pencil, Trash2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { cn } from "@/lib/utils"
+import type { Project } from "@/hooks/use-project-actions"
 
 interface ProjectSidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
-  projects: Project[];
-  onNewProject: () => void;
-  onRenameProject: (project: Project) => void;
-  onDeleteProject: (project: Project) => void;
+  isOpen: boolean
+  onClose: () => void
+  ownedProjects: Project[]
+  sharedProjects: Project[]
+  onNewProject: () => void
+  onRename: (project: Project) => void
+  onDelete: (project: Project) => void
+  activeProjectId?: string
 }
 
 export function ProjectSidebar({
   isOpen,
   onClose,
-  projects,
+  ownedProjects,
+  sharedProjects,
   onNewProject,
-  onRenameProject,
-  onDeleteProject,
+  onRename,
+  onDelete,
+  activeProjectId,
 }: ProjectSidebarProps) {
-  const [activeTab, setActiveTab] = useState("my-projects");
-  const [hoveredProject, setHoveredProject] = useState<string | null>(null);
-
-  const myProjects = projects.filter((p) => p.isOwned);
-  const sharedProjects = projects.filter((p) => !p.isOwned);
-
-  const handleBackdropClick = () => {
-    onClose();
-  };
+  const initialTab = sharedProjects.some((project) => project.id === activeProjectId)
+    ? "shared"
+    : "my-projects"
 
   return (
     <>
-      {/* Backdrop for mobile */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
-          onClick={handleBackdropClick}
+          className="fixed inset-0 z-40 bg-bg-base/70 backdrop-blur-sm md:hidden"
+          onClick={onClose}
+          aria-hidden="true"
         />
       )}
 
       <aside
-        className={`fixed top-0 left-0 h-full w-72 z-50 flex flex-col bg-bg-surface border-r border-border-default transition-transform duration-200 ${
+        className={cn(
+          "fixed inset-y-3 left-3 top-[3.75rem] z-50 flex w-72 flex-col rounded-2xl border border-border-subtle bg-bg-surface/95 backdrop-blur-xl transition-transform duration-200",
           isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        )}
       >
-        <div className="h-12 shrink-0 flex items-center justify-between px-4 border-b border-border-default">
+        <div className="flex h-12 shrink-0 items-center justify-between border-b border-border-default px-4">
           <span className="text-sm font-medium text-text-primary">Projects</span>
           <Button variant="ghost" size="icon-sm" onClick={onClose}>
             <X className="h-4 w-4" />
@@ -56,8 +56,12 @@ export function ProjectSidebar({
           </Button>
         </div>
 
-        <div className="flex-1 flex flex-col overflow-hidden p-3">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
+        <div className="flex flex-1 flex-col overflow-hidden p-3">
+          <Tabs
+            key={`${activeProjectId ?? "home"}-${initialTab}`}
+            defaultValue={initialTab}
+            className="flex flex-1 flex-col"
+          >
             <TabsList className="w-full">
               <TabsTrigger value="my-projects" className="flex-1">
                 My Projects
@@ -67,71 +71,43 @@ export function ProjectSidebar({
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent
-              value="my-projects"
-              className="flex-1 flex flex-col gap-1 mt-2 overflow-y-auto -mx-1 px-1"
-            >
-              {myProjects.length === 0 ? (
-                <div className="flex-1 flex items-center justify-center">
+            <TabsContent value="my-projects" className="flex-1 overflow-y-auto mt-2">
+              {ownedProjects.length === 0 ? (
+                <div className="flex items-center justify-center h-full">
                   <p className="text-sm text-text-muted">No projects yet.</p>
                 </div>
               ) : (
-                myProjects.map((project) => (
-                  <div
-                    key={project.id}
-                    className="group flex items-center justify-between px-2 py-1.5 rounded-md hover:bg-bg-subtle cursor-pointer"
-                  >
-                    <span className="text-sm text-text-primary truncate">
-                      {project.name}
-                    </span>
-                    <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
-                      <Button
-                        variant="ghost"
-                        size="icon-xs"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onRenameProject(project);
-                        }}
-                      >
-                        <Pencil className="h-3 w-3" />
-                        <span className="sr-only">Rename {project.name}</span>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon-xs"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDeleteProject(project);
-                        }}
-                      >
-                        <Trash2 className="h-3 w-3" />
-                        <span className="sr-only">Delete {project.name}</span>
-                      </Button>
-                    </div>
-                  </div>
-                ))
+                <ul className="flex flex-col gap-0.5">
+                  {ownedProjects.map((project) => (
+                    <li key={project.id}>
+                      <ProjectItem
+                        project={project}
+                        active={project.id === activeProjectId}
+                        onRename={onRename}
+                        onDelete={onDelete}
+                      />
+                    </li>
+                  ))}
+                </ul>
               )}
             </TabsContent>
 
-            <TabsContent
-              value="shared"
-              className="flex-1 flex flex-col gap-1 mt-2 overflow-y-auto -mx-1 px-1"
-            >
+            <TabsContent value="shared" className="flex-1 overflow-y-auto mt-2">
               {sharedProjects.length === 0 ? (
-                <div className="flex-1 flex items-center justify-center">
+                <div className="flex items-center justify-center h-full">
                   <p className="text-sm text-text-muted">No shared projects.</p>
                 </div>
               ) : (
-                sharedProjects.map((project) => (
-                  <div
-                    key={project.id}
-                    className="flex items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-bg-subtle"
-                  >
-                    <span className="text-sm text-text-primary truncate">
-                      {project.name}
-                    </span>
-                  </div>
-                ))
+                <ul className="flex flex-col gap-0.5">
+                  {sharedProjects.map((project) => (
+                    <li key={project.id}>
+                      <ProjectItem
+                        project={project}
+                        active={project.id === activeProjectId}
+                      />
+                    </li>
+                  ))}
+                </ul>
               )}
             </TabsContent>
           </Tabs>
@@ -150,5 +126,68 @@ export function ProjectSidebar({
         </div>
       </aside>
     </>
-  );
+  )
+}
+
+interface ProjectItemProps {
+  project: Project
+  active?: boolean
+  onRename?: (project: Project) => void
+  onDelete?: (project: Project) => void
+}
+
+function ProjectItem({ project, active = false, onRename, onDelete }: ProjectItemProps) {
+  return (
+    <div
+      className={cn(
+        "group flex items-center gap-2 rounded-xl border px-2 py-1.5 transition-colors",
+        active
+          ? "border-border-subtle bg-accent-primary-dim"
+          : "border-transparent hover:bg-bg-subtle"
+      )}
+    >
+      <span
+        className={cn(
+          "size-1.5 shrink-0 rounded-full bg-border-subtle",
+          active && "bg-accent-primary"
+        )}
+      />
+      <Link
+        href={`/editor/${project.id}`}
+        aria-current={active ? "page" : undefined}
+        className={cn(
+          "min-w-0 flex-1 truncate text-sm",
+          active ? "text-text-primary" : "text-text-secondary hover:text-text-primary"
+        )}
+      >
+        {project.name}
+      </Link>
+      {onRename && onDelete && (
+        <div className="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={(e) => {
+              e.preventDefault()
+              onRename(project)
+            }}
+          >
+            <Pencil className="h-3.5 w-3.5" />
+            <span className="sr-only">Rename</span>
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={(e) => {
+              e.preventDefault()
+              onDelete(project)
+            }}
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+            <span className="sr-only">Delete</span>
+          </Button>
+        </div>
+      )}
+    </div>
+  )
 }

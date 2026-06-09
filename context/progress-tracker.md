@@ -12,6 +12,33 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Completed
 
+- (Previous: Share Dialog)
+- Fixed editor workspace client wiring to match current project action hook and dialog props
+- Created API route: GET /api/projects/[projectId]/collaborators - lists collaborators with Clerk enrichment
+- Created API route: POST /api/projects/[projectId]/collaborators - invite by email (owner only)
+- Created API route: DELETE /api/projects/[projectId]/collaborators - remove collaborator (owner only)
+- Created lib/clerk.ts with getClerkUserByEmail() for Clerk user enrichment
+- Created lib/collaborators.ts with getEnrichedCollaborators() server helper
+- Created components/editor/share-dialog.tsx with:
+  - Copy project link with "Copied!" feedback
+  - Invite by email (owners only)
+  - View/remove collaborators (owners only)
+  - Read-only view for collaborators
+  - Clerk name/avatar enrichment when available
+- Updated workspace-client.tsx with share dialog integration
+- Build passes
+- (Previous: Workspace Editor)
+- Created lib/project-access.ts with getCurrentUser() and getProjectWithAccess() helpers
+- Created components/editor/access-denied.tsx with centered layout, lock icon, message, and link to /editor
+- Created app/editor/[projectId]/page.tsx as server component with access checks
+- Unauthenticated users redirect to /sign-in
+- Non-existent or unauthorized projects show AccessDenied
+- Created workspace-client.tsx with full-viewport layout
+- Created workspace-sidebar.tsx that shows projects and highlights current one
+- Workspace navbar shows project name, share button, and AI chat toggle
+- Canvas placeholder with dark background and centered message
+- Right sidebar placeholder for future AI chat
+- Build passes with no TypeScript errors
 - (Previous: Project APIs)
 - Wired editor home sidebar and dialogs to real project API
 - Created lib/data.ts with getProjects() for server-side data fetching
@@ -65,7 +92,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Next Up
 
-- Wire the workspace editor to the project (load project data in /editor/[projectId])
+- Implement canvas functionality with React Flow (nodes, edges, drag/drop)
 
 ## Open Questions
 

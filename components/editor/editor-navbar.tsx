@@ -1,51 +1,74 @@
-"use client";
+"use client"
 
-import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { UserButton } from "@clerk/nextjs";
+import { PanelLeftClose, PanelLeftOpen, Share2, Sparkles } from "lucide-react"
+import { UserButton } from "@clerk/nextjs"
+import { Button } from "@/components/ui/button"
 
 interface EditorNavbarProps {
-  isSidebarOpen: boolean;
-  onToggleSidebar: () => void;
+  isOpen: boolean
+  onToggle: () => void
+  projectName?: string
+  isAiSidebarOpen?: boolean
+  onToggleAiSidebar?: () => void
+  onOpenShareDialog?: () => void
 }
 
-export function EditorNavbar({ isSidebarOpen, onToggleSidebar }: EditorNavbarProps) {
+export function EditorNavbar({
+  isOpen,
+  onToggle,
+  projectName,
+  isAiSidebarOpen = false,
+  onToggleAiSidebar,
+  onOpenShareDialog,
+}: EditorNavbarProps) {
   return (
-    <header className="fixed top-0 left-0 right-0 z-30 h-14 flex items-center justify-between border-b border-border-default bg-[var(--bg-surface)] px-4">
-      {/* Left section */}
-      <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onToggleSidebar}
-          className="h-9 w-9"
-          aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-        >
-          {isSidebarOpen ? (
+    <header className="flex h-12 shrink-0 items-center justify-between border-b border-border-default bg-bg-surface px-3">
+      <div className="flex min-w-0 items-center gap-3">
+        <Button variant="ghost" size="icon" onClick={onToggle}>
+          {isOpen ? (
             <PanelLeftClose className="h-5 w-5" />
           ) : (
             <PanelLeftOpen className="h-5 w-5" />
           )}
+          <span className="sr-only">Toggle sidebar</span>
         </Button>
+
+        {projectName ? (
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-text-primary">{projectName}</p>
+            <p className="text-xs text-text-faint">Workspace</p>
+          </div>
+        ) : null}
       </div>
 
-      {/* Center section */}
-      <div className="flex-1 flex justify-center">
-        <span className="text-sm font-medium text-[var(--text-secondary)]">
-          Untitled Project
-        </span>
-      </div>
+      <div className="flex items-center gap-2">
+        {onToggleAiSidebar ? (
+          <>
+            {onOpenShareDialog ? (
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2"
+                onClick={onOpenShareDialog}
+              >
+                <Share2 className="h-4 w-4" />
+                Share
+              </Button>
+            ) : null}
+            <Button
+              variant={isAiSidebarOpen ? "default" : "outline"}
+              size="sm"
+              className="gap-2"
+              onClick={onToggleAiSidebar}
+            >
+              <Sparkles className="h-4 w-4" />
+              AI
+            </Button>
+          </>
+        ) : null}
 
-      {/* Right section */}
-      <div className="flex items-center gap-2 min-w-[100px] justify-end">
-        <UserButton
-          appearance={{
-            elements: {
-              avatarBox: "h-9 w-9",
-            },
-          }}
-        />
+        <UserButton />
       </div>
     </header>
-  );
+  )
 }

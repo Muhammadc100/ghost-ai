@@ -56,6 +56,10 @@ export function EditorHomeClient({ initialProjects }: EditorHomeClientProps) {
     handleDeleteProject,
   } = useProjectActions(initialProjects);
 
+  // Split projects into owned and shared
+  const ownedProjects = projects.filter((p) => p.isOwned);
+  const sharedProjects = projects.filter((p) => !p.isOwned);
+
   const handleToggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
@@ -67,8 +71,8 @@ export function EditorHomeClient({ initialProjects }: EditorHomeClientProps) {
   return (
     <div className="min-h-screen">
       <EditorNavbar
-        isSidebarOpen={isSidebarOpen}
-        onToggleSidebar={handleToggleSidebar}
+        isOpen={isSidebarOpen}
+        onToggle={handleToggleSidebar}
       />
 
       <ProjectDialogs
@@ -84,10 +88,11 @@ export function EditorHomeClient({ initialProjects }: EditorHomeClientProps) {
         <ProjectSidebar
           isOpen={isSidebarOpen}
           onClose={handleCloseSidebar}
-          projects={projects}
+          ownedProjects={ownedProjects}
+          sharedProjects={sharedProjects}
           onNewProject={openCreateDialog}
-          onRenameProject={openRenameDialog}
-          onDeleteProject={openDeleteDialog}
+          onRename={openRenameDialog}
+          onDelete={openDeleteDialog}
         />
 
         <EditorHome onNewProject={openCreateDialog} isLoading={isLoading} />
