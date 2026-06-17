@@ -12,6 +12,25 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Completed
 
+- (Previous: Shape Panel)
+- Created components/editor/shape-panel.tsx with draggable shape buttons (rectangle, diamond, circle, pill, cylinder, hexagon)
+- Created components/editor/custom-node.tsx with CanvasNode component for rendering
+- Updated canvas.tsx with drag-and-drop handling for creating new nodes
+- Added ShapePanel toolbar at bottom-center of canvas
+- Build passes
+- (Previous: Base Canvas)
+- Created types/canvas.ts with CanvasNodeData interface (label, color, shape)
+- Created components/editor/canvas.tsx with LiveblocksProvider, RoomProvider, ClientSideSuspense
+- Integrated useLiveblocksFlow from @liveblocks/react-flow
+- Added ReactFlow with Background (dots), MiniMap, Cursors, fitView
+- Updated editor-workspace-client.tsx to use the Canvas component
+- Build passes
+- (Previous: Liveblocks Setup)
+- Updated liveblocks.config.ts with Presence (cursor, isThinking) and UserMeta (name, avatar, cursorColor)
+- Created lib/liveblocks.ts with cached client, getCursorColor() helper, and getRoomId() helper
+- Created POST /api/liveblocks-auth route with Clerk auth, project access verification, and room creation
+- Added LIVEBLOCKS_SECRET_KEY and NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY to .env.local
+- Build passes
 - (Previous: Share Dialog)
 - Fixed editor workspace client wiring to match current project action hook and dialog props
 - Created API route: GET /api/projects/[projectId]/collaborators - lists collaborators with Clerk enrichment
